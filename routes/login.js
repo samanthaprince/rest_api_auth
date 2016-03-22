@@ -16,12 +16,26 @@ module.exports = (router) => {
     console.log(name);
     console.log(password);
 
-    User.find({name: name}, user => {
+    var newUser = new User({name: name, password: password });
+    newUser.save((err, user) => {
+      if (err) {
+        console.error(err);
+      }
+      console.log('in new user save');
+      return (user);
+    });
+
+    User.findOne({name: name}, (err, user) => {
+      console.log('name ' + name);
+      console.log('user ' + user);
       let valid = user.compareHash(password);
       if (!valid) {
         return res.json({status: 'failure'});
       }
-      res.json({token: user.generateToken()});
+      var myToken = user.generateToken();
+      res.json({token: myToken});
+      
+      console.log('token' + myToken);
     });
   });
 
