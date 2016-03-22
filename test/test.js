@@ -24,12 +24,10 @@ describe('test api', function () {
     request('localhost:3000')
       .post('/login')
       .auth('testuser', 'testpassword')
-      // .send({})
       .end(function(err, res) {
         console.log(res);
         expect(err).to.eql(null);
         expect(res).to.have.property('headers');
-        // expect(res.body.name).to.eql('Rachel Ray');
         expect(res.body).to.have.property('token');
         done();
       });
